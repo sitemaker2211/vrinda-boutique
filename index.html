@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Vrinda Boutique - Premium Fashion Collection showcasing luxury fashion and exclusive designs" />
     <title>Vrinda Boutique - Premium Fashion Collection</title>
+    <link rel="icon" type="image/jpeg" href="public/logo.jpg">
+    <link rel="apple-touch-icon" href="public/logo.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -27,6 +30,15 @@
 
         .text-gold {
             color: var(--primary-gold);
+        }
+
+        .vrinda-white {
+            color: #d4af37;
+        }
+
+        .vrinda-font {
+            font-family: 'Playfair Display', serif;
+            color: #d4af37;
         }
 
         .bg-gold {
@@ -95,6 +107,31 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-image {
+            height: 40px;
+            width: auto;
+            max-width: 120px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-image:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .logo-image {
+                height: 32px;
+                max-width: 100px;
+            }
+        }
+
         .slide-in {
             animation: slideIn 0.8s ease-out;
         }
@@ -104,25 +141,30 @@
             to { opacity: 1; transform: translateX(0); }
         }
     </style>
+    
 </head>
 <body class="bg-white">
     <!-- Header -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
+            <div class="flex justify-center items-center h-16">
                 <!-- Logo -->
-                <div class="flex items-center">
-                    <h1 class="text-2xl font-serif font-bold text-gold">VRINDA</h1>
+                <div class="logo-container -ml-10">
+                    <img src="./public/logo.jpg" alt="Vrinda Boutique" class="logo-image">
+                    <h1 class="ml-3 text-3xl font-serif font-bold leading-none">
+                        <span class="text-black">VRINDA</span>
+                        <span class="text-black">BOUTIQUE</span>
+                    </h1>
                 </div>
 
                 <!-- Desktop Navigation -->
-                <nav class="hidden md:flex space-x-8">
-                    <a href="#home" class="text-sm font-medium text-gray-700 hover:text-gold transition-colors">Home</a>
-                    <a href="#products" class="text-sm font-medium text-gray-700 hover:text-gold transition-colors">Products</a>
+                <nav class="hidden md:flex space-x-8 mx-auto">
+                    <a href="#home" class="text-sm font-medium text-gold-700 hover:text-gold transition-colors">Home</a>
+                    <a href="#products" class="text-sm font-medium text-gray-700 hover:text-gold transition-colors">Gallery</a>
                     <a href="#about" class="text-sm font-medium text-gray-700 hover:text-gold transition-colors">About</a>
                     <a href="#contact" class="text-sm font-medium text-gray-700 hover:text-gold transition-colors">Contact</a>
                 </nav>
-
+                
                 <!-- Cart Icon -->
                 <div class="flex items-center space-x-4">
                     <button onclick="toggleCart()" class="relative p-2 text-gray-700 hover:text-gold transition-colors">
@@ -146,7 +188,7 @@
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
             <div class="px-4 py-2 space-y-1">
                 <a href="#home" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gold">Home</a>
-                <a href="#products" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gold">Products</a>
+                <a href="#products" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gold">Gallery</a>
                 <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gold">About</a>
                 <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gold">Contact</a>
             </div>
@@ -159,12 +201,18 @@
         <section id="home" class="relative h-screen flex items-center justify-center hero-gradient overflow-hidden">
             <div class="absolute inset-0 bg-black opacity-40"></div>
             <div class="relative z-10 text-center px-4 fade-in">
-                <h1 class="text-5xl md:text-7xl font-serif font-bold text-white mb-6">
-                    Timeless <span class="text-gold">Elegance</span>
-                </h1>
-                <p class="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto">
-                    Discover curated collections that define sophistication and style
-                </p>
+                <div class="text-center mb-4">
+                    <div class="flex items-center justify-center">
+                        <div>
+                            <h2 class="text-6xl md:text-7xl font-serif font-bold mb-6">
+                                <span class="text-white">VRINDA</span>
+                                <span class="text-amber-400">BOUTIQUE</span>
+                            </h2>
+                            <p class="text-white text-xl md:text-2xl max-w-2xl mx-auto mb-8">
+                                Discover curated collections that define sophistication and style
+                                </p>
+                        </div>
+                </div>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="#products" class="btn-primary inline-flex items-center justify-center">
                         Shop Collection
@@ -179,27 +227,27 @@
             </div>
         </section>
 
-        <!-- Featured Products -->
+        <!-- Featured Gallery -->
         <section id="products" class="py-20 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-16 fade-in">
-                    <h2 class="text-4xl font-serif font-bold text-gray-900 mb-4">
-                        Featured <span class="text-gold">Collection</span>
+                    <h2 class="text-5xl font-serif font-bold text-gray-900 mb-4">
+                        Welcome to<span class="text-gold"> Vrinda Store</span>
                     </h2>
                     <p class="text-gray-600 max-w-2xl mx-auto">
-                        Handpicked pieces that embody luxury craftsmanship and contemporary design
+                        Explore our curated collection of luxury pieces that showcase exceptional craftsmanship and timeless design
                     </p>
                 </div>
 
                 <div id="products-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Products will be dynamically inserted here -->
+                    <!-- Gallery items will be dynamically inserted here -->
                 </div>
 
                 <div class="text-center mt-12">
                     <button onclick="showAllProducts()" class="btn-secondary inline-flex items-center">
-                        View All Products
+                        View more Products
                         <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L6.828 16H4a2 2 0 00-2 2v2a2 2 0 002 2h2.828l8.586 8.586a2 2 0 012.828 0L20 16V4a2 2 0 00-2-2h-2.828z"></path>
                         </svg>
                     </button>
                 </div>
@@ -211,11 +259,11 @@
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-16 fade-in">
                     <h2 class="text-4xl font-serif font-bold text-gray-900 mb-6">
-                        Crafting <span class="text-gold">Excellence</span> Since 2018
+                        Crafting <span class="vrinda-white">Excellence</span> Since 1985
                     </h2>
                     <p class="text-lg text-gray-600 leading-relaxed mb-8">
-                        VRINDA Boutique was founded with a simple vision: to bring together the world's most exquisite 
-                        pieces in one curated collection. Over 8 years later, we remain committed to this vision, 
+                        Vrinda Boutique was founded with a simple vision: to bring together the world's most exquisite 
+                        pieces in one curated collection. Over three decades later, we remain committed to this vision, 
                         sourcing only the finest materials and working with artisans who share our passion for perfection.
                     </p>
                     <p class="text-lg text-gray-600 leading-relaxed">
@@ -257,8 +305,8 @@
                         Get in <span class="text-gold">Touch</span>
                     </h2>
                     <p class="text-gray-600 leading-relaxed mb-8">
-                        Whether you have a question about our products, need styling advice, 
-                        or want to learn more about our services, our team is here to help.
+                        We'd love to hear from you. Whether you have a question about our collections, 
+                        need styling advice, or want to learn more about our story, and our team are here to help.
                     </p>
                 </div>
 
@@ -364,17 +412,23 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div class="col-span-1 md:col-span-2">
-                    <h2 class="text-3xl font-serif font-bold text-gold mb-4">VRINDA</h2>
+                    <div class="flex items-center mb-4">
+                        <img src="public/logo.jpg" alt="Vrinda Boutique" class="logo-image">
+                        <h1 class="ml-3 text-3xl font-serif leading-none">
+                        <span class="text-white">VRINDA</span>
+                        <span class="text-white">BOUTIQUE</span>
+                    </h1>
+                    </div>
                     <p class="text-gray-300 mb-6 max-w-md">
                         Discover timeless elegance and sophisticated style at our luxury boutique. 
-                        Curated collections for the discerning fashion enthusiast.
+                        Curated collections for discerning fashion enthusiast.
                     </p>
                 </div>
 
                 <div>
                     <h3 class="text-lg font-semibold mb-4 text-gold">Quick Links</h3>
                     <ul class="space-y-2">
-                        <li><a href="#products" class="text-gray-300 hover:text-gold transition-colors">New Arrivals</a></li>
+                        <li><a href="#products" class="text-gray-300 hover:text-gold transition-colors">Gallery</a></li>
                         <li><a href="#about" class="text-gray-300 hover:text-gold transition-colors">About Us</a></li>
                         <li><a href="#contact" class="text-gray-300 hover:text-gold transition-colors">Contact</a></li>
                     </ul>
@@ -392,7 +446,7 @@
 
             <div class="mt-8 pt-8 border-t border-gray-800 text-center">
                 <p class="text-gray-400 text-sm">
-                    © 2026 Vrinda Boutique. All rights reserved.
+                    2024 Vrinda Boutique. All rights reserved. | Privacy Policy | Terms of Service
                 </p>
             </div>
         </div>
@@ -480,14 +534,29 @@
         // Cart state
         let cart = [];
 
+        // Helper function to add new gallery items easily
+        function addGalleryItem(id, name, price, category, image, description, featured = false) {
+            const newItem = {
+                id: id,
+                name: name,
+                price: price,
+                category: category,
+                image: image,
+                description: description,
+                featured: featured
+            };
+            products.push(newItem);
+            renderGalleryItems(); // Refresh the gallery display
+        }
+
         // Initialize EmailJS
         (function() {
-            emailjs.init(RepnMH8wE8bzSlRsO); // You'll need to replace this with your actual EmailJS public key
+            emailjs.init("YOUR_EMAILJS_PUBLIC_KEY"); // You'll need to replace this with your actual EmailJS public key
         })();
 
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
-            renderProducts();
+            renderGalleryItems();
             updateCartUI();
             
             // Add contact form event listener
@@ -497,17 +566,17 @@
             }
         });
 
-        // Render products
-        function renderProducts() {
-            const productsGrid = document.getElementById('products-grid');
-            const featuredProducts = products.slice(0, 3);
+        // Render gallery items
+        function renderGalleryItems() {
+            const galleryGrid = document.getElementById('products-grid');
+            const featuredItems = products.slice(0, 3);
             
-            productsGrid.innerHTML = featuredProducts.map(product => `
+            galleryGrid.innerHTML = featuredItems.map(item => `
                 <div class="product-card bg-white rounded-lg overflow-hidden shadow-lg">
                     <div class="relative overflow-hidden">
-                        <img src="${product.image}" alt="${product.name}" class="w-full h-80 object-cover">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-80 object-cover">
                         <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100">
-                            <button onclick="addToCart(${product.id})" class="p-3 bg-white rounded-full hover:bg-gold hover:text-white transition-all duration-300">
+                            <button onclick="addToCart(${item.id})" class="p-3 bg-white rounded-full hover:bg-gold hover:text-white transition-all duration-300">
                                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                                 </svg>
@@ -516,15 +585,15 @@
                     </div>
                     <div class="p-6">
                         <div class="mb-2">
-                            <span class="text-sm text-gray-500 uppercase tracking-wide">${product.category}</span>
+                            <span class="text-sm text-gray-500 uppercase tracking-wide">${item.category}</span>
                         </div>
-                        <h3 class="text-lg font-serif font-semibold text-gray-900 mb-2">${product.name}</h3>
+                        <h3 class="text-lg font-serif font-semibold text-gray-900 mb-2">${item.name}</h3>
                         <div class="flex items-center justify-between">
-                            <span class="text-2xl font-bold text-gold">$${product.price}</span>
+                            <span class="text-2xl font-bold text-gold">$${item.price}</span>
                             <div class="flex items-center space-x-1">
                                 ${[...Array(5)].map((_, i) => `
                                     <svg class="h-4 w-4 ${i < 4 ? 'text-gold fill-current' : 'text-gray-300'}" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l-2.8 2.034c-.784.57-1.838.197-1.539 1.118l-2.8 2.034a1 1 0 00-.364 1.118z"></path>
                                     </svg>
                                 `).join('')}
                             </div>
@@ -534,15 +603,16 @@
             `).join('');
         }
 
-        // Show all products
-        function showAllProducts() {
-            const productsGrid = document.getElementById('products-grid');
-            productsGrid.innerHTML = products.map(product => `
+        // Show all gallery items
+        function showAllGalleryItems() {
+            const galleryGrid = document.getElementById('products-grid');
+            
+            galleryGrid.innerHTML = products.map(item => `
                 <div class="product-card bg-white rounded-lg overflow-hidden shadow-lg">
                     <div class="relative overflow-hidden">
-                        <img src="${product.image}" alt="${product.name}" class="w-full h-80 object-cover">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-80 object-cover">
                         <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100">
-                            <button onclick="addToCart(${product.id})" class="p-3 bg-white rounded-full hover:bg-gold hover:text-white transition-all duration-300">
+                            <button onclick="addToCart(${item.id})" class="p-3 bg-white rounded-full hover:bg-gold hover:text-white transition-all duration-300">
                                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                                 </svg>
@@ -551,15 +621,15 @@
                     </div>
                     <div class="p-6">
                         <div class="mb-2">
-                            <span class="text-sm text-gray-500 uppercase tracking-wide">${product.category}</span>
+                            <span class="text-sm text-gray-500 uppercase tracking-wide">${item.category}</span>
                         </div>
-                        <h3 class="text-lg font-serif font-semibold text-gray-900 mb-2">${product.name}</h3>
+                        <h3 class="text-lg font-serif font-semibold text-gray-900 mb-2">${item.name}</h3>
                         <div class="flex items-center justify-between">
-                            <span class="text-2xl font-bold text-gold">$${product.price}</span>
+                            <span class="text-2xl font-bold text-gold">$${item.price}</span>
                             <div class="flex items-center space-x-1">
                                 ${[...Array(5)].map((_, i) => `
                                     <svg class="h-4 w-4 ${i < 4 ? 'text-gold fill-current' : 'text-gray-300'}" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l-2.8 2.034c-.784.57-1.838.197-1.539 1.118l-2.8 2.034a1 1 0 00-.364 1.118z"></path>
                                     </svg>
                                 `).join('')}
                             </div>

@@ -1,14 +1,30 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Menu, X, Search } from 'lucide-react';
+import { ShoppingBag, Menu, X, Search, LogOut } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { getTotalItems, setIsCartOpen } = useCart();
+  const { isAuthenticated, user, logout } = useAuth();
+
+  const handleCartClick = () => {
+    if (isAuthenticated) {
+      setIsCartOpen(true);
+    } else {
+      navigate('/login');
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -22,8 +38,16 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <h1 className="text-2xl font-serif font-bold text-gold">VRINDA</h1>
+          <Link to="/" className="flex items-center gap-3">
+            <img 
+              src="/logo.jpg" 
+              alt="Vrinda Boutique" 
+              className="h-10 w-auto max-w-[120px] object-contain transition-transform hover:scale-105"
+            />
+            <h2 className="text-5xl md:text-2xl font-serif font-bold mb-1">
+                <span className="text-amber-400">VRINDA</span>
+              </h2>
+            
           </Link>
 
           {/* Desktop Navigation */}
@@ -55,7 +79,7 @@ const Header = () => {
 
             {/* Cart */}
             <button
-              onClick={() => setIsCartOpen(true)}
+              onClick={handleCartClick}
               className="relative p-2 text-gray-700 hover:text-gold transition-colors"
             >
               <ShoppingBag className="h-5 w-5" />
@@ -65,6 +89,24 @@ const Header = () => {
                 </span>
               )}
             </button>
+
+            {/* User Auth */}
+            {isAuthenticated ? (
+              <button
+                onClick={handleLogout}
+                className="p-2 text-gray-700 hover:text-gold transition-colors"
+                title="Logout"
+              >
+                <LogOut className="h-5 w-5" />
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                className="px-4 py-2 bg-amber-400 text-gray-900 rounded-lg hover:bg-amber-500 transition-colors font-medium text-sm"
+              >
+                Login
+              </Link>
+            )}
 
             {/* Mobile menu button */}
             <button

@@ -20,7 +20,7 @@ const Home = () => {
           className="relative z-10 text-center px-4"
         >
           <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-6">
-            Timeless <span className="text-gold">Elegance</span>
+            VRINDA <span className="text-gold">BOUTIQUE</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto">
             Discover curated collections that define sophistication and style

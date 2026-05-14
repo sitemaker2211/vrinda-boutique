@@ -1,11 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus, Minus, ShoppingBag, ArrowRight } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 const Cart = () => {
   const { items, removeFromCart, updateQuantity, clearCart, getTotalPrice, getTotalItems } = useCart();
+  const { isAuthenticated } = useAuth();
+
+  // Redirect to login if not authenticated
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
 
   const handleQuantityChange = (productId, newQuantity) => {
     if (newQuantity <= 0) {
