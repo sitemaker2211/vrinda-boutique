@@ -100,7 +100,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Phone</h3>
-                    <p className="text-gray-600">+1 (555) 123-4567</p>
+                    <p className="text-gray-600">+91 7014854662</p>
                     <p className="text-sm text-gray-500">Mon-Fri: 9am-6pm EST</p>
                   </div>
                 </div>
@@ -113,7 +113,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Email</h3>
-                    <p className="text-gray-600">info@vrindaboutique.com</p>
+                    <p className="text-gray-600">vrindaboutique04@gmail.com</p>
                     <p className="text-sm text-gray-500">We respond within 24 hours</p>
                   </div>
                 </div>
@@ -126,8 +126,8 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Visit Us</h3>
-                    <p className="text-gray-600">123 Luxury Lane</p>
-                    <p className="text-gray-600">New York, NY 10001</p>
+                    <p className="text-gray-600">197, Sector 51</p>
+                    <p className="text-gray-600">Gurugram, Haryana, 122018</p>
                     <p className="text-sm text-gray-500">By appointment only</p>
                   </div>
                 </div>
@@ -284,11 +284,11 @@ const Contact = () => {
               {[
                 {
                   question: "Do you offer international shipping?",
-                  answer: "Yes, we ship worldwide. Shipping costs and delivery times vary by location."
+                  answer: "No, we do not ship worldwide."
                 },
                 {
                   question: "What is your return policy?",
-                  answer: "We offer 30-day returns on unworn items with original tags and packaging."
+                  answer: "We offer 10-day returns on unworn items with original tags and packaging."
                 },
                 {
                   question: "How can I track my order?",
@@ -296,16 +296,13 @@ const Contact = () => {
                 },
                 {
                   question: "Do you offer gift wrapping?",
-                  answer: "Yes, we offer complimentary gift wrapping on all orders. Simply select the option at checkout."
+                  answer: "Yes, we offer gift wrapping on all orders. Charges may apply."
                 },
                 {
                   question: "Can I make an appointment for a personal styling session?",
-                  answer: "Absolutely! Contact us to schedule a personalized styling consultation at our flagship store."
+                  answer: "Absolutely! You can fill the appointment form to schedule a personalized styling consultation at our store."
                 },
-                {
-                  question: "Do you have a loyalty program?",
-                  answer: "Yes, our VRINDA Rewards program offers exclusive benefits for our valued clients."
-                }
+                
               ].map((faq, index) => (
                 <motion.div
                   key={index}

@@ -33,7 +33,7 @@ const About = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-serif font-bold text-gray-900 mb-6">
-              Crafting <span className="text-gold">Excellence</span> Since 1985
+              Crafting <span className="text-gold">Excellence</span> Since 2018
             </h2>
             <p className="text-lg text-gray-600 leading-relaxed mb-8">
               VRINDA Boutique was founded with a simple vision: to bring together the world's most exquisite 
@@ -99,11 +99,12 @@ const About = () => {
             </h2>
             <div className="space-y-8">
               {[
-                { year: "1985", event: "VRINDA Boutique founded with a small collection of European designers" },
-                { year: "1995", event: "Expanded to include emerging Asian designers and opened our flagship store" },
-                { year: "2005", event: "Launched our online platform, bringing luxury to a global audience" },
-                { year: "2015", event: "Introduced our exclusive in-house collection of timeless pieces" },
-                { year: "2024", event: "Continuing our legacy of excellence while embracing sustainable luxury" }
+                { year: "2018", event: "VRINDA Boutique was started with a very few customers and designs" },
+                { year: "2020", event: "Expanded to include emerging designs and opened our store at home" },
+                { year: "2022", event: "Introduced our exclusive in-house collection of timeless pieces" },
+                { year: "2024", event: "Continuing our legacy of excellence while embracing sustainable luxury" },
+                { year: "2025", event: "Launched our online platform, bringing luxury to a global audience" }
+
               ].map((milestone, index) => (
                 <motion.div
                   key={index}
@@ -134,23 +135,19 @@ const About = () => {
             <h2 className="text-3xl font-serif font-bold text-gray-900 text-center mb-12">
               Meet Our <span className="text-gold">Team</span>
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-center max-w-3xl mx-auto">
               {[
                 {
-                  name: "Isabella Chen",
-                  role: "Founder & Creative Director",
-                  bio: "With over 30 years in luxury fashion, Isabella's vision shapes our curated collections."
+                  name: "Kusum Lata",
+                  role: "Founder",
+                  bio: "With over 8 years in Cloth stitching and designing, Kusum's vision shapes our curated collections."
                 },
                 {
-                  name: "Marcus Williams",
-                  role: "Head of Curation",
-                  bio: "Marcus travels the world discovering emerging designers and timeless pieces for our collection."
+                  name: "Himesh Yadav",
+                  role: "Head of Operations",
+                  bio: "Himesh ensures seamless operations and exceptional customer experiences."
                 },
-                {
-                  name: "Sophia Laurent",
-                  role: "Customer Experience Director",
-                  bio: "Sophia ensures every client receives personalized service and expert styling advice."
-                }
+                
               ].map((member, index) => (
                 <motion.div
                   key={index}
@@ -160,7 +157,21 @@ const About = () => {
                   transition={{ delay: index * 0.1 }}
                   className="text-center"
                 >
-                  <div className="w-32 h-32 bg-gray-200 rounded-full mx-auto mb-4"></div>
+                  {member.name === "Kusum Lata" ? (
+  <img
+    src="/kusum.jpg"
+    alt="Kusum Lata"
+    className="w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-gold shadow-lg"
+  />
+) : member.name === "Himesh Yadav" ? (
+  <img
+    src="/himesh.jpg"
+    alt="Himesh Yadav"
+    className="w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-gold shadow-lg"
+  />
+) : (
+  <div className="w-32 h-32 bg-gray-200 rounded-full mx-auto mb-4"></div>
+)}
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">{member.name}</h3>
                   <p className="text-gold font-medium mb-3">{member.role}</p>
                   <p className="text-gray-600 text-sm">{member.bio}</p>

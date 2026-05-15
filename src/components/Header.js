@@ -1,29 +1,32 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Menu, X, Search, LogOut } from 'lucide-react';
+import { ShoppingBag, Menu, X, LogOut, User } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { getTotalItems, setIsCartOpen } = useCart();
+  const { getTotalItems } = useCart();
   const { isAuthenticated, user, logout } = useAuth();
 
   const handleCartClick = () => {
-    if (isAuthenticated) {
-      setIsCartOpen(true);
-    } else {
-      navigate('/login');
-    }
-  };
+  if (isAuthenticated) {
+    navigate('/cart');
+  } else {
+    navigate('/login');
+  }
+};
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login', { replace: true });
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   const navigation = [
@@ -69,14 +72,6 @@ const Header = () => {
 
           {/* Actions */}
           <div className="flex items-center space-x-4">
-            {/* Search */}
-            <button
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="p-2 text-gray-700 hover:text-gold transition-colors"
-            >
-              <Search className="h-5 w-5" />
-            </button>
-
             {/* Cart */}
             <button
               onClick={handleCartClick}
@@ -92,16 +87,25 @@ const Header = () => {
 
             {/* User Auth */}
             {isAuthenticated ? (
-              <button
-                onClick={handleLogout}
-                className="p-2 text-gray-700 hover:text-gold transition-colors"
-                title="Logout"
-              >
-                <LogOut className="h-5 w-5" />
-              </button>
+              <>
+                <Link
+                  to="/profile"
+                  className="p-2 text-gray-700 hover:text-gold transition-colors"
+                  title="Profile"
+                >
+                  <User className="h-5 w-5" />
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="p-2 text-gray-700 hover:text-gold transition-colors"
+                  title="Logout"
+                >
+                  <LogOut className="h-5 w-5" />
+                </button>
+              </>
             ) : (
               <Link
-                to="/login"
+                to="/login?redirect=profile"
                 className="px-4 py-2 bg-amber-400 text-gray-900 rounded-lg hover:bg-amber-500 transition-colors font-medium text-sm"
               >
                 Login
@@ -117,27 +121,6 @@ const Header = () => {
             </button>
           </div>
         </div>
-
-        {/* Search Bar */}
-        <AnimatePresence>
-          {isSearchOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="border-t border-gray-200 py-4"
-            >
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search products..."
-                  className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:border-gold"
-                />
-                <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
 
       {/* Mobile Navigation */}
