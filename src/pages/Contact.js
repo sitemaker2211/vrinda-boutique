@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, Facebook, Instagram, Twitter } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 
 const Contact = () => {
@@ -148,29 +148,36 @@ const Contact = () => {
               </div>
 
               {/* Social Media */}
-              <div className="pt-6 border-t border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Follow Us</h3>
-                <div className="flex space-x-4">
-                  <a
-                    href="#"
-                    className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-gold hover:text-white transition-colors"
-                  >
-                    <span className="text-sm font-bold">f</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-gold hover:text-white transition-colors"
-                  >
-                    <span className="text-sm font-bold">ig</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-gold hover:text-white transition-colors"
-                  >
-                    <span className="text-sm font-bold">tw</span>
-                  </a>
-                </div>
-              </div>
+              <div className="flex space-x-4">
+
+  <a
+    href="https://facebook.com"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-gold hover:text-white transition-all duration-300"
+  >
+    <Facebook className="h-5 w-5" />
+  </a>
+
+  <a
+    href="https://instagram.com"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-gold hover:text-white transition-all duration-300"
+  >
+    <Instagram className="h-5 w-5" />
+  </a>
+
+  <a
+    href="https://x.com"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-gold hover:text-white transition-all duration-300"
+  >
+    <Twitter className="h-5 w-5" />
+  </a>
+
+</div>
             </motion.div>
 
             {/* Contact Form */}

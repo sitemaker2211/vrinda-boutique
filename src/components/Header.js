@@ -1,24 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Menu, X, LogOut, User } from 'lucide-react';
-import { useCart } from '../context/CartContext';
+import { Menu, X, LogOut, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { getTotalItems } = useCart();
   const { isAuthenticated, user, logout } = useAuth();
-
-  const handleCartClick = () => {
-  if (isAuthenticated) {
-    navigate('/cart');
-  } else {
-    navigate('/login');
-  }
-};
 
   const handleLogout = async () => {
     try {
@@ -31,7 +21,8 @@ const Header = () => {
 
   const navigation = [
     { name: 'Home', href: '/' },
-    { name: 'Products', href: '/products' },
+    { name: 'Gallery', href: '/products' },
+    { name: 'Appointment', href: '/appointment' },
     { name: 'About', href: '/about' },
     { name: 'Contact', href: '/contact' }
   ];
@@ -72,19 +63,6 @@ const Header = () => {
 
           {/* Actions */}
           <div className="flex items-center space-x-4">
-            {/* Cart */}
-            <button
-              onClick={handleCartClick}
-              className="relative p-2 text-gray-700 hover:text-gold transition-colors"
-            >
-              <ShoppingBag className="h-5 w-5" />
-              {getTotalItems() > 0 && (
-                <span className="absolute -top-1 -right-1 bg-gold text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {getTotalItems()}
-                </span>
-              )}
-            </button>
-
             {/* User Auth */}
             {isAuthenticated ? (
               <>

@@ -23,6 +23,8 @@ const About = () => {
         </motion.div>
       </section>
 
+
+
       {/* About Content */}
       <section className="py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,7 +34,7 @@ const About = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-serif font-bold text-gray-900 mb-6">
+            <h2 className="text-5xl font-serif font-bold text-gray-900 mb-8">
               Crafting <span className="text-gold">Excellence</span> Since 2018
             </h2>
             <p className="text-lg text-gray-600 leading-relaxed mb-8">
@@ -87,6 +89,63 @@ const About = () => {
             ))}
           </div>
 
+
+
+                    {/* Team Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-5xl font-serif font-bold text-gray-900 text-center mb-12">
+              Meet Our <span className="text-gold">Team</span>
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-center max-w-3xl mx-auto">
+              {[
+                {
+                  name: "Kusum Lata",
+                  role: "Founder",
+                    bio: "With over 8 years in Cloth stitching and designing, Kusum's vision shapes our curated collections."
+                  },
+                  {
+                    name: "Himesh Yadav",
+                    role: "Head of Operations",
+                    bio: "Himesh ensures seamless operations and exceptional customer experiences."
+                  },
+                  
+                ].map((member, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className="text-center"
+                  >
+                    {member.name === "Kusum Lata" ? (
+    <img
+      src="/kusum.jpg"
+      alt="Kusum Lata"
+      className="w-52 h-52 rounded-full mx-auto mb-6 object-cover border-4 border-gold shadow-lg"
+    />
+  ) : member.name === "Himesh Yadav" ? (
+    <img
+      src="/himesh.jpg"
+      alt="Himesh Yadav"
+      className="w-52 h-52 rounded-full mx-auto mb-6 object-cover border-4 border-gold shadow-lg"
+    />
+  ) : (
+    <div className="w-32 h-32 bg-gray-200 rounded-full mx-auto mb-4"></div>
+  )}
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{member.name}</h3>
+                    <p className="text-gold text-xl font-semibold mb-4">{member.role}</p>
+                    <p className="text-gray-600 font-semibold text-sm mb-5">{member.bio}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+
           {/* Timeline */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -126,59 +185,7 @@ const About = () => {
             </div>
           </motion.div>
 
-          {/* Team Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl font-serif font-bold text-gray-900 text-center mb-12">
-              Meet Our <span className="text-gold">Team</span>
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-center max-w-3xl mx-auto">
-              {[
-                {
-                  name: "Kusum Lata",
-                  role: "Founder",
-                  bio: "With over 8 years in Cloth stitching and designing, Kusum's vision shapes our curated collections."
-                },
-                {
-                  name: "Himesh Yadav",
-                  role: "Head of Operations",
-                  bio: "Himesh ensures seamless operations and exceptional customer experiences."
-                },
-                
-              ].map((member, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="text-center"
-                >
-                  {member.name === "Kusum Lata" ? (
-  <img
-    src="/kusum.jpg"
-    alt="Kusum Lata"
-    className="w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-gold shadow-lg"
-  />
-) : member.name === "Himesh Yadav" ? (
-  <img
-    src="/himesh.jpg"
-    alt="Himesh Yadav"
-    className="w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-gold shadow-lg"
-  />
-) : (
-  <div className="w-32 h-32 bg-gray-200 rounded-full mx-auto mb-4"></div>
-)}
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{member.name}</h3>
-                  <p className="text-gold font-medium mb-3">{member.role}</p>
-                  <p className="text-gray-600 text-sm">{member.bio}</p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+
         </div>
       </section>
 

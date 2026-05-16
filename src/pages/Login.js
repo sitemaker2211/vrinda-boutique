@@ -10,7 +10,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -18,36 +18,35 @@ const Login = () => {
 
   // Redirect if already authenticated
   React.useEffect(() => {
-    if (isAuthenticated) {
-      navigate(`/${redirectPath}`);
-    }
-  }, [isAuthenticated, navigate, redirectPath]);
+  if (!loading && isAuthenticated) {
+    navigate(`/${redirectPath}`);
+  }
+}, [isAuthenticated, loading, navigate, redirectPath]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
+  e.preventDefault();
+  setError('');
 
-    if (!email || !password) {
-      setError('Please fill in all fields');
-      return;
-    }
+  if (!email || !password) {
+    setError('Please fill in all fields');
+    return;
+  }
 
-    if (!email.includes('@')) {
-      setError('Please enter a valid email address');
-      return;
-    }
+  if (!email.includes('@')) {
+    setError('Please enter a valid email address');
+    return;
+  }
 
-    setIsLoading(true);
+  setIsLoading(true);
 
-    try {
-      await login(email, password);
-      navigate(`/${redirectPath}`);
-    } catch (error) {
-      setError(error.message || 'Failed to sign in. Please check your credentials.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  try {
+    await login(email, password);
+  } catch (error) {
+    setError(error.message || 'Failed to sign in. Please check your credentials.');
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-amber-50 to-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

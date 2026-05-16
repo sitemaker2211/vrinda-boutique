@@ -1,13 +1,16 @@
 import { initializeApp } from 'firebase/app';
-import { 
-  getAuth, 
-  signInWithEmailAndPassword, 
+import {
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut as firebaseSignOut,
   sendPasswordResetEmail,
   onAuthStateChanged,
   updateProfile,
-  sendEmailVerification as firebaseSendEmailVerification
+  sendEmailVerification as firebaseSendEmailVerification,
+  reload as firebaseReload
 } from 'firebase/auth';
 import { 
   getFirestore, 
@@ -33,9 +36,20 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// Set auth persistence
+const ensurePersistence = async () => {
+  try {
+    await setPersistence(auth, browserLocalPersistence);
+    console.log("Auth persistence enabled");
+  } catch (error) {
+    console.error("Error setting auth persistence:", error);
+  }
+};
+
 // Authentication functions
 export const loginUser = async (email, password) => {
   try {
+    await ensurePersistence();
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return { user: userCredential.user, error: null };
   } catch (error) {
@@ -45,14 +59,15 @@ export const loginUser = async (email, password) => {
 
 export const registerUser = async (email, password, name = '') => {
   try {
+    await ensurePersistence();
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
-    
+
     // Update user profile with display name
     if (name) {
       await updateProfile(user, { displayName: name });
     }
-    
+
     // Save user data to Firestore
     const userDocRef = doc(db, 'users', user.uid);
     await setDoc(userDocRef, {
@@ -62,7 +77,10 @@ export const registerUser = async (email, password, name = '') => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     });
-    
+
+    // Send verification email
+    await firebaseSendEmailVerification(user);
+
     return { user, error: null };
   } catch (error) {
     return { user: null, error: error.message };
@@ -142,6 +160,26 @@ export const sendVerificationEmail = async () => {
 
   } catch (error) {
     console.error('Error sending email verification:', error);
+
+    return { error: error.message };
+  }
+};
+
+// Reload user function to get updated email verification status
+export const reloadUser = async () => {
+  try {
+    const user = auth.currentUser;
+
+    if (!user) {
+      return { error: 'No user is currently signed in' };
+    }
+
+    await firebaseReload(user);
+
+    return { user, error: null };
+
+  } catch (error) {
+    console.error('Error reloading user:', error);
 
     return { error: error.message };
   }

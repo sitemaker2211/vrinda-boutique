@@ -123,7 +123,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center text-gray-300">
                 <Phone className="h-4 w-4 mr-2 text-gold" />
-                +91 7014854660
+                +91 7014854662
               </li>
               <li className="flex items-center text-gray-300">
                 <Mail className="h-4 w-4 mr-2 text-gold" />
@@ -192,7 +192,7 @@ const Footer = () => {
         {/* Copyright */}
         <div className="mt-8 pt-8 border-t border-gray-800 text-center">
           <p className="text-gray-400 text-sm">
-            © 2024 Vrinda Boutique. All rights reserved. | Privacy Policy | Terms of Service
+            © 2025 Vrinda Boutique. All rights reserved. | Privacy Policy | Terms of Service
           </p>
         </div>
       </div>

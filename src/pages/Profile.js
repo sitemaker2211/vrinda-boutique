@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { User, Mail, Phone, ArrowLeft, ShoppingBag, Check, RefreshCw } from 'lucide-react';
+import { User, Mail, Phone, ArrowLeft, ShoppingBag, Check, RefreshCw, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { updateUserData, sendVerificationEmail } from '../firebase';
+import { updateUserData } from '../firebase';
 
 const Profile = () => {
-  const { user, isAuthenticated, loading, refreshUserData } = useAuth();
+  const { user, isAuthenticated, loading, refreshUserData, checkEmailVerification, sendVerificationEmailToUser } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     displayName: '',
@@ -17,6 +17,7 @@ const Profile = () => {
   const [phoneMessage, setPhoneMessage] = useState('');
   const [isSendingEmailVerification, setIsSendingEmailVerification] = useState(false);
   const [emailVerificationMessage, setEmailVerificationMessage] = useState('');
+  const [isCheckingVerification, setIsCheckingVerification] = useState(false);
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
@@ -86,8 +87,8 @@ const Profile = () => {
     setEmailVerificationMessage('');
 
     try {
-      const { error } = await sendVerificationEmail();
-      
+      const { error } = await sendVerificationEmailToUser();
+
       if (error) {
         setEmailVerificationMessage('Failed to send verification email. Please try again.');
       } else {
@@ -97,6 +98,25 @@ const Profile = () => {
       setEmailVerificationMessage('Failed to send verification email. Please try again.');
     } finally {
       setIsSendingEmailVerification(false);
+    }
+  };
+
+  const handleCheckVerification = async () => {
+    setIsCheckingVerification(true);
+    setEmailVerificationMessage('');
+
+    try {
+      const isVerified = await checkEmailVerification();
+
+      if (isVerified) {
+        setEmailVerificationMessage('Email verified successfully!');
+      } else {
+        setEmailVerificationMessage('Email not verified yet. Please check your inbox and click the verification link.');
+      }
+    } catch (error) {
+      setEmailVerificationMessage('Failed to check verification status. Please try again.');
+    } finally {
+      setIsCheckingVerification(false);
     }
   };
 
@@ -194,35 +214,76 @@ const Profile = () => {
                   type="email"
                   value={user.email}
                   disabled
-                  className="appearance-none block w-full pl-10 pr-32 py-3 border border-gray-200 bg-gray-50 rounded-lg text-gray-600 cursor-not-allowed"
+                  className={`appearance-none block w-full pl-10 pr-32 py-3 border border-gray-200 bg-gray-50 rounded-lg text-gray-600 cursor-not-allowed ${
+                    user.emailVerified ? '' : ''
+                  }`}
                 />
-                <button
-                  onClick={handleSendEmailVerification}
-                  disabled={isSendingEmailVerification}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 px-3 py-1 bg-amber-400 text-gray-900 rounded-md hover:bg-amber-500 transition-colors text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
-                >
-                  {isSendingEmailVerification ? (
-                    <div className="flex items-center">
-                      <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-1"></div>
-                      Sending...
-                    </div>
-                  ) : (
-                    <div className="flex items-center">
-                      <RefreshCw className="h-3 w-3 mr-1" />
-                      Verify
-                    </div>
-                  )}
-                </button>
+                {!user.emailVerified && (
+                  <button
+                    onClick={handleSendEmailVerification}
+                    disabled={isSendingEmailVerification}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 px-3 py-1 bg-amber-400 text-gray-900 rounded-md hover:bg-amber-500 transition-colors text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                  >
+                    {isSendingEmailVerification ? (
+                      <div className="flex items-center">
+                        <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-1"></div>
+                        Sending...
+                      </div>
+                    ) : (
+                      <div className="flex items-center">
+                        <RefreshCw className="h-3 w-3 mr-1" />
+                        Verify
+                      </div>
+                    )}
+                  </button>
+                )}
               </div>
               <p className="text-xs text-gray-500 mt-1">Email cannot be changed</p>
+
+              {/* Email Verification Status */}
+              <div className="mt-3 flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  {user.emailVerified ? (
+                    <div className="flex items-center space-x-2 text-green-600">
+                      <Check className="h-4 w-4" />
+                      <span className="text-sm font-medium">Email Verified</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center space-x-2 text-amber-600">
+                      <AlertCircle className="h-4 w-4" />
+                      <span className="text-sm font-medium">Email Not Verified</span>
+                    </div>
+                  )}
+                </div>
+                {!user.emailVerified && (
+                  <button
+                    onClick={handleCheckVerification}
+                    disabled={isCheckingVerification}
+                    className="text-xs text-amber-600 hover:text-amber-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                  >
+                    {isCheckingVerification ? (
+                      <div className="flex items-center">
+                        <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-amber-600 mr-1"></div>
+                        Checking...
+                      </div>
+                    ) : (
+                      <div className="flex items-center">
+                        <RefreshCw className="h-3 w-3 mr-1" />
+                        Check Status
+                      </div>
+                    )}
+                  </button>
+                )}
+              </div>
+
               {emailVerificationMessage && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className={`mt-2 px-4 py-2 rounded-lg text-sm ${
-                    emailVerificationMessage.includes('sent')
+                    emailVerificationMessage.includes('verified') || emailVerificationMessage.includes('sent')
                       ? 'bg-green-50 border border-green-200 text-green-600'
-                      : 'bg-red-50 border border-red-200 text-red-600'
+                      : 'bg-amber-50 border border-amber-200 text-amber-600'
                   }`}
                 >
                   {emailVerificationMessage}

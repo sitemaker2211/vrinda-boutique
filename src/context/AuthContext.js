@@ -1,72 +1,121 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { onAuthChange, loginUser as firebaseLogin, registerUser as firebaseRegister, signOut as firebaseSignOut, getUserData } from '../firebase';
+import {
+  onAuthChange,
+  loginUser as firebaseLogin,
+  registerUser as firebaseRegister,
+  signOut as firebaseSignOut,
+  getUserData,
+  sendVerificationEmail,
+  reloadUser,
+  updateUserData
+} from '../firebase';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  // Derived auth state
+  const isAuthenticated = !!user;
 
   const fetchUserData = async (firebaseUser) => {
     if (!firebaseUser) return null;
-    
-    const { data: userData, error } = await getUserData(firebaseUser.uid);
-    
+
+    const { data: userData } = await getUserData(firebaseUser.uid);
+
     if (userData) {
       return {
         email: firebaseUser.email,
         uid: firebaseUser.uid,
-        displayName: userData.displayName || firebaseUser.displayName || firebaseUser.email.split('@')[0],
+        emailVerified: firebaseUser.emailVerified,
+        displayName:
+          userData.displayName ||
+          firebaseUser.displayName ||
+          firebaseUser.email.split('@')[0],
         ...userData
       };
     } else {
       return {
         email: firebaseUser.email,
         uid: firebaseUser.uid,
-        displayName: firebaseUser.displayName || firebaseUser.email.split('@')[0]
+        emailVerified: firebaseUser.emailVerified,
+        displayName:
+          firebaseUser.displayName ||
+          firebaseUser.email.split('@')[0]
       };
     }
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthChange(async (firebaseUser) => {
-      if (firebaseUser) {
-        const userData = await fetchUserData(firebaseUser);
-        setUser(userData);
-        setIsAuthenticated(true);
-      } else {
-        setUser(null);
-        setIsAuthenticated(false);
-      }
-      setLoading(false);
-    });
+  const unsubscribe = onAuthChange(async (firebaseUser) => {
 
-    return () => unsubscribe();
-  }, []);
-
-  const login = async (email, password) => {
-    setLoading(true);
-
-    const { user, error } = await firebaseLogin(email, password);
-
-    if (error) {
-      setLoading(false);
-      throw new Error(error);
+    if (firebaseUser) {
+      const userData = await fetchUserData(firebaseUser);
+      setUser(userData);
+    } else {
+      setUser(null);
     }
 
-    setIsAuthenticated(true);
-    setUser(user);
     setLoading(false);
+  });
 
-    return user;
-  };
+  return () => unsubscribe();
+}, []);
+
+  const login = async (email, password) => {
+  const { user, error } = await firebaseLogin(email, password);
+
+  if (error) {
+    throw new Error(error);
+  }
+
+  // Set basic user state immediately for fast redirect
+  setUser({
+    email: user.email,
+    uid: user.uid,
+    emailVerified: user.emailVerified,
+    displayName: user.displayName || user.email.split('@')[0]
+  });
+
+  // Set loading to false to enable redirect
+  setLoading(false);
+
+  // Fetch Firestore data in background
+  fetchUserData(user).then(userData => {
+    setUser(userData);
+  }).catch(err => {
+    console.error('Error fetching user data:', err);
+  });
+
+  return user;
+};
 
   const register = async (email, password, name = '') => {
     const { user, error } = await firebaseRegister(email, password, name);
+
     if (error) {
       throw new Error(error);
     }
+
+    // Set basic user state immediately for fast redirect
+    setUser({
+      email: user.email,
+      uid: user.uid,
+      emailVerified: user.emailVerified,
+      displayName: name || user.displayName || user.email.split('@')[0]
+    });
+
+    // Set loading to false to enable redirect
+    setLoading(false);
+
+    // Fetch Firestore data in background
+    fetchUserData(user).then(userData => {
+      setUser(userData);
+    }).catch(err => {
+      console.error('Error fetching user data:', err);
+    });
+
     return user;
   };
 
@@ -80,9 +129,7 @@ export const AuthProvider = ({ children }) => {
         throw new Error(error);
       }
 
-      // Reset auth state
       setUser(null);
-      setIsAuthenticated(false);
 
     } catch (error) {
       console.error(error);
@@ -94,13 +141,64 @@ export const AuthProvider = ({ children }) => {
 
   const refreshUserData = async () => {
     if (user) {
-      const userData = await fetchUserData(user);
-      setUser(userData);
+      
+    }
+  };
+
+  const checkEmailVerification = async () => {
+    try {
+      const { user: firebaseUser, error } = await reloadUser();
+
+      if (error) {
+        throw new Error(error);
+      }
+
+      if (firebaseUser) {
+        // Save emailVerified status to Firestore
+        await updateUserData(firebaseUser.uid, {
+          emailVerified: firebaseUser.emailVerified
+        });
+
+        const userData = await fetchUserData(firebaseUser);
+        setUser(userData);
+      }
+
+      return firebaseUser?.emailVerified || false;
+    } catch (error) {
+      console.error('Error checking email verification:', error);
+      throw error;
+    }
+  };
+
+  const sendVerificationEmailToUser = async () => {
+    try {
+      const { error } = await sendVerificationEmail();
+
+      if (error) {
+        throw new Error(error);
+      }
+
+      return { error: null };
+    } catch (error) {
+      console.error('Error sending verification email:', error);
+      return { error: error.message };
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, loading, login, register, logout, refreshUserData }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated,
+        loading,
+        login,
+        register,
+        logout,
+        refreshUserData,
+        checkEmailVerification,
+        sendVerificationEmailToUser
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -108,8 +206,10 @@ export const AuthProvider = ({ children }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
+
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
+
   return context;
 };
